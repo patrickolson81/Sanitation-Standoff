@@ -9,11 +9,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ColliderHandler : MonoBehaviour
 {
+    private float ragdollVelThresh = 3f;
     private PeopleStateController psc;
     private HapticController hapticController;
-
-    private XRDirectInteractor rHand;
-    private XRDirectInteractor lHand;
 
     private ControllerVelocity leftVelocityTrack;
     private ControllerVelocity rightVelocityTrack;
@@ -26,8 +24,7 @@ public class ColliderHandler : MonoBehaviour
     {
         psc = GetComponentInParent<PeopleStateController>();
         hapticController = GameObject.Find("XR Origin (XR Rig)").GetComponent<HapticController>();
-        rHand = GameObject.Find("Right Direct Interactor").GetComponent<XRDirectInteractor>();
-        lHand = GameObject.Find("Left Direct Interactor").GetComponent<XRDirectInteractor>();
+
         leftVelocityTrack = GameObject.Find("Left Controller").GetComponent<ControllerVelocity>();
         rightVelocityTrack = GameObject.Find("Right Controller").GetComponent<ControllerVelocity>();
 
@@ -61,7 +58,7 @@ public class ColliderHandler : MonoBehaviour
                     psc.hitPlaying = true;
                     psc.SetState(new PeopleNut(psc));
                 }
-                if (leftVelocity.magnitude > 4f || rightVelocity.magnitude > 4f)
+                if (leftVelocity.magnitude > ragdollVelThresh || rightVelocity.magnitude > ragdollVelThresh)
                 {
                     psc.SetState(new PeopleRagdoll(psc));
                 }
